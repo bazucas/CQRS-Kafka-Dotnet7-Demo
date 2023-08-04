@@ -24,10 +24,8 @@ builder.Services.AddScoped<IEventSourcingHandler<PostAggregate>, EventSourcingHa
 builder.Services.AddScoped<ICommandHandler, CommandHandler>();
 
 var dispatcher = new CommandDispatcher();
-
 builder.Services.AddOptions<ICommandHandler>().Configure((commandHandler) => 
 {
-    var dispatcher = new CommandDispatcher();
     dispatcher.RegisterHandler<NewPostCommand>(commandHandler.HandlerAsync);
     dispatcher.RegisterHandler<EditMessageCommand>(commandHandler.HandlerAsync);
     dispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandlerAsync);
@@ -35,23 +33,8 @@ builder.Services.AddOptions<ICommandHandler>().Configure((commandHandler) =>
     dispatcher.RegisterHandler<EditCommentCommand>(commandHandler.HandlerAsync);
     dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandlerAsync);
     dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandlerAsync);
-    builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 });
-
 builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
-
-
-// register command handler methods
-// var commandHandler = builder.Services.BuildServiceProvider().GetRequiredService<ICommandHandler>();
-// var dispatcher = new CommandDispatcher();
-// dispatcher.RegisterHandler<NewPostCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<EditMessageCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<LikePostCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<AddCommentCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<EditCommentCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<RemoveCommentCommand>(commandHandler.HandlerAsync);
-// dispatcher.RegisterHandler<DeletePostCommand>(commandHandler.HandlerAsync);
-// builder.Services.AddSingleton<ICommandDispatcher>(_ => dispatcher);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
