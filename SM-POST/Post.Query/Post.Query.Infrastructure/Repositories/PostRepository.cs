@@ -19,7 +19,7 @@ public class PostRepository : IPostRepository
         using DatabaseContext context = _contextFactory.CreateDbContext();
         context.Posts.Add(post);
 
-        await context.SaveChangesAsync();
+        _ = await context.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(Guid postId)
@@ -30,13 +30,13 @@ public class PostRepository : IPostRepository
         if (post is null) return;
 
         context.Posts.Remove(post);
-        await context.SaveChangesAsync();
+        _ = await context.SaveChangesAsync();
     }
 
     public async Task<PostEntity> GetByIdAsync(Guid postId)
     {
         using DatabaseContext context = _contextFactory.CreateDbContext();
-        return await context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(x => x.PostId == postId);
+        return await context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(x => x.PostId == postId) ?? new PostEntity();
     }
 
     public async Task<List<PostEntity>> ListAllAsync()
@@ -79,6 +79,6 @@ public class PostRepository : IPostRepository
         using DatabaseContext context = _contextFactory.CreateDbContext();
         context.Posts.Update(post);
 
-        await context.SaveChangesAsync();
+        _ = await context.SaveChangesAsync();
     }
 }
