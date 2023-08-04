@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using Post.Query.Domain.Entities;
+using Post.Query.Domain.Repositories;
 using Post.Query.Infrastructure.DataAccess;
 
 namespace Post.Query.Infrastructure.Repositories;
@@ -34,9 +36,7 @@ public class PostRepository : IPostRepository
     public async Task<PostEntity> GetByIdAsync(Guid postId)
     {
         using DatabaseContext context = _contextFactory.CreateDbContext();
-        return await context.Posts
-            .Include(p => p.Comments)
-            .FirstOrDefaultAsync(x => x.PostId == postId);
+        return await context.Posts.Include(p => p.Comments).FirstOrDefaultAsync(x => x.PostId == postId);
     }
 
     public async Task<List<PostEntity>> ListAllAsync()
@@ -61,7 +61,7 @@ public class PostRepository : IPostRepository
         using DatabaseContext context = _contextFactory.CreateDbContext();
         return await context.Posts.AsNoTracking()
             .Include(p => p.Comments).AsNoTracking()
-            .Where(x => x.Comments is not null and x.Comments.Any())
+            .Where(x => x.Comments != null && x.Comments.Any())
             .ToListAsync();  
     }
 
@@ -71,7 +71,7 @@ public class PostRepository : IPostRepository
         return await context.Posts.AsNoTracking()
             .Include(p => p.Comments).AsNoTracking()
             .Where(x => x.Likes >= numberOfLikes)
-            .ToListAsync();   new NotImplementedException();
+            .ToListAsync();
     }
 
     public async Task UpdateAsync(PostEntity post)
