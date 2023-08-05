@@ -6,17 +6,11 @@ using Post.Common.DTOs;
 
 namespace Post.Cmd.Api.Controllers;
 
-[ApiController]
-[Route("api/v1/[controller]")]
-public class NewPostController : ControllerBase
+public class NewPostController : MyControllerBase<NewPostController>
 {
-    private readonly ILogger<NewPostController> _logger;
-    private readonly ICommandDispatcher _commandDispatcher;
-
     public NewPostController(ILogger<NewPostController> logger, ICommandDispatcher commandDispatcher)
+        : base(logger, commandDispatcher)
     {
-        _logger = logger;
-        _commandDispatcher = commandDispatcher;
     }
 
     [HttpPost]

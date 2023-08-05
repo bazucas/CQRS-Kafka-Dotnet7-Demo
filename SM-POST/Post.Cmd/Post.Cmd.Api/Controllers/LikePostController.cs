@@ -6,20 +6,14 @@ using Post.Common.DTOs;
 
 namespace Post.Cmd.Api.Controllers;
 
-[ApiController]
-[Route("api/v1/[controller]")]
-public class LikePostController : ControllerBase
+public class LikePostController : MyControllerBase<LikePostController>
 {
-        private readonly ILogger<LikePostController> _logger;
-    private readonly ICommandDispatcher _commandDispatcher;
-
     public LikePostController(ILogger<LikePostController> logger, ICommandDispatcher commandDispatcher)
+        : base(logger, commandDispatcher)
     {
-        _logger = logger;
-        _commandDispatcher = commandDispatcher;
     }
 
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     public async Task<IActionResult> LikePostAsync(Guid id)
     {
         try {

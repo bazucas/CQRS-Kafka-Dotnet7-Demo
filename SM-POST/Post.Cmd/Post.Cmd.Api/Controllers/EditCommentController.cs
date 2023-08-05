@@ -6,15 +6,15 @@ using Post.Common.DTOs;
 
 namespace Post.Cmd.Api.Controllers;
 
-public class EditMessageController : MyControllerBase<EditMessageController>
+public class EditCommentController : MyControllerBase<EditCommentController>
 {
-    public EditMessageController(ILogger<EditMessageController> logger, ICommandDispatcher commandDispatcher)
+    public EditCommentController(ILogger<EditCommentController> logger, ICommandDispatcher commandDispatcher) 
         : base(logger, commandDispatcher)
     {
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> EditMessageAsync(Guid id, EditMessageCommand command)
+    public async Task<IActionResult> EditCommentAsync(Guid id, EditCommentCommand command)
     {
         try {
             command.Id = id;
@@ -22,7 +22,7 @@ public class EditMessageController : MyControllerBase<EditMessageController>
 
             return Ok(new BaseResponse
             {
-                Message = "Edit message request completed successfully!"
+                Message = "Edit comment request completed successfully!"
             });
         }
         catch(InvalidOperationException ex) 
@@ -43,7 +43,7 @@ public class EditMessageController : MyControllerBase<EditMessageController>
         }
         catch(Exception ex)
         {
-            const string SAFE_ERROR_MESSAGE = "Error while processing request to edit a message of a post!";
+            const string SAFE_ERROR_MESSAGE = "Error while processing request to edit a comment on a post!";
             _logger.Log(LogLevel.Error, ex, SAFE_ERROR_MESSAGE);
 
             return StatusCode(StatusCodes.Status500InternalServerError, new BaseResponse
